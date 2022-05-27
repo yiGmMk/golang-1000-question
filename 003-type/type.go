@@ -1,40 +1,27 @@
 package typetest
 
 import (
-	"fmt"
-
 	"github.com/yiGmMk/leetcode/golang/util"
 )
 
-// see now we have two customize type,and what is the difference?
+//1. we have two customize type, what is the difference?
+//两种类型有何区别
 type NodeType1 util.TreeNode
 
 type NodeType2 = util.TreeNode
 
-func Trans1(val interface{}) (*NodeType1, error) {
-	var err error
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("%+v", r)
-		}
-	}()
-	if val == nil {
-		return nil, nil
-	}
-	out, _ := val.(*NodeType1)
-	return out, err
-}
+// node := &util.TreeNode{Val: 1}
+// var iVal interface{}
+// iVal = node
+// val, ok := iVal.(*NodeType1)  //val,ok is ?
+// val, ok := iVal.(*NodeType2)  //val,ok is ?
 
-func Trans2(val interface{}) (*NodeType2, error) {
-	var err error
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("%+v", r)
-		}
-	}()
-	if val == nil {
-		return nil, nil
-	}
-	out, _ := val.(*NodeType2)
-	return out, err
-}
+// 2. can we define function as below?
+// 能定义下面这样的函数吗?
+// func (n *NodeType1) AddLeft(l *NodeType1) {
+// 	n.Left = (*util.TreeNode)(l)
+// }
+
+// func (n *NodeType2) AddLeft(l *NodeType1) {
+// 	n.Left = (*util.TreeNode)(l)
+// }

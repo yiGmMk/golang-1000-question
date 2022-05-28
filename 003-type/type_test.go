@@ -56,6 +56,21 @@ talk_url: https://golang.google.cn/talks/2016/refactor.article#TOC_5.1.
 	2. 优化命名
 	3. 优化依赖,减少依赖.(如将os.EOF移入io包,这样不需要os库api的可用减少对os依赖)
 	4. 修改依赖关系图使某些包能被另一个包导入(在go 1前由于包括time等许多包import了os导致在os在中无法使用time包,go 1后修改了)
+- 逐步进行代码重构
+	一.atomic code repair,api改动和code repair在一个大提交中完成
+	二.gradual code repair,逐步重构
+	三.为什么逐步重构
+		1. codebase api的改动对于使用方影响很大,每一个微小的改动,逐级放大,到最终使用方可能有100倍,1000倍的改动,且在实践中
+	automic code repair难以执行,大量的代码重构需要在一个提交实现,让代码实现,review变得异常困难.
+		2. 通过分段执行:add new api(interchangeable with old API),code repair,remove old api,逐步重构.
+			- 更大工作量,新旧api需要能同时工作.
+			- 但整个流程相对简单,可以逐步完成.提交中的代码也更少,冲突的概率变小
+- type类型的重构
+	1. 通过gradual code repair的方式将一个type迁移到另一个package,通过type T1 T2是行不通的,即使是interface,go仍认为这是不同的类型,
+在一个方法返回T2类型和T1类型被视为不同,这就导致了无法实现interface的方法(类型不同,函数前面不同).
+	这里引出了问题,就是我们如何实现让一个类型和另一个interchangeable(相互可替换,等同)?atomic code repair,或者强制要求使用方在后一版本修复代码?
+	为了解决这个问题(将类型从一个package逐步迁移到里一个package),go在1.9引入了类型别名(type alias).在go 1.9的release说明中有
+	Go now supports type aliases to support gradual code repair while moving a type between packages.
 */
 
 /* 5.references

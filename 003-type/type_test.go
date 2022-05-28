@@ -42,7 +42,23 @@ func TestType(t *testing.T) {
 // 2. NodeType1可以
 //    NodeType2不能,invalid receiver type *util.TreeNode (type not defined in this package)
 
-/* 3.references
+/* 3. what are type aliases designed for ?
+类型别名设计初衷
+
+*/
+
+/* 4. summary of a post from go talk about Codebase refactoring
+talk_url: https://golang.google.cn/talks/2016/refactor.article#TOC_5.1.
+- go致力于简化构建大规模的软件,这包括更大的系统,更大的代码量(google单库超十亿行代码,godoc.org为数十万个package提供服务)
+- go为此限制了package的import,只导入需使用的
+- 代码重构的原因:
+	1. 拆分package,方便用户管理,使用
+	2. 优化命名
+	3. 优化依赖,减少依赖.(如将os.EOF移入io包,这样不需要os库api的可用减少对os依赖)
+	4. 修改依赖关系图使某些包能被另一个包导入(在go 1前由于包括time等许多包import了os导致在os在中无法使用time包,go 1后修改了)
+*/
+
+/* 5.references
 - https://golang.google.cn/doc/go1.9
 - https://golang.google.cn/design/18130-type-alias
 - https://golang.google.cn/talks/2016/refactor.article

@@ -37,6 +37,10 @@ func TestType(t *testing.T) {
 		log.Println(val, ok)
 		convey.So(ok, convey.ShouldBeTrue)
 	})
+
+	// output type
+	var t1, t2 = NodeType1{}, NodeType2{}
+	log.Printf("\n t1_type:%T\n t2_type:%T", t1, t2)
 }
 
 // 2. NodeType1可以
